@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento - Pet Shop 4 Patas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url(https://images.unsplash.com/photo-1507146426996-ef05306b995a?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D);
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4e3b2d;
+            padding: 10px 0;
+            color: white;
+            text-align: center;
+        }
+        h1 {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .order-summary {
+            margin-bottom: 20px;
+        }
+        .order-summary p {
+            margin: 5px 0;
+        }
+        .total {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .payment-methods {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .payment-methods button {
+            background-color: #4e3b2d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .payment-methods button:hover {
+            background-color: #d49a2a;
+            transform: scale(1.05);
+        }
+        .payment-form {
+            display: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .payment-form.active {
+            display: block;
+            opacity: 1;
+        }
+        .payment-form label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        .payment-form input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .payment-form button {
+            background-color: #4e3b2d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .payment-form button:hover {
+            background-color: #d49a2a;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        nav li {
+            display: inline;
+            margin-left: 20px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #f7d799;
+            font-weight: bold;
+        }
+        #clear-order {
+    background-color: #4e3b2d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: block;
+    margin: 20px auto;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#clear-order:hover {
+    background-color: #d49a2a;
+    transform: scale(1.05);
+}
+
+    </style>
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="serviços.html">Serviços</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+            <li><a href="produtos.html">Produtos</a></li>
+            <li><a href="Login.html">Login</a></li>
+        </ul>
+    </nav>
+    <h2>Pagamento - Pet Shop 4 Patas</h2>
+</header>
+<div class="container">
+    <h1>Resumo do Pedido</h1>
+    <div class="order-summary" id="order-summary">
+        <p>Carregando itens...</p>
+    </div>
+    <button id="clear-order" onclick="clearOrder()">Limpar Resumo do Pedido</button>
+    <div class="payment-methods">
+        <button onclick="selectPaymentMethod('credit')">Cartão de Crédito</button>
+        <button onclick="selectPaymentMethod('debit')">Cartão de Débito</button>
+        <button onclick="selectPaymentMethod('pix')">PIX</button>
+    </div>
+    <form class="payment-form" id="credit-form">
+        <h2>Pagamento com Cartão de Crédito</h2>
+        <label for="credit-name">Nome Completo</label>
+        <input type="text" id="credit-name" placeholder="Digite seu nome" required>
+        <label for="credit-card-number">Número do Cartão</label>
+        <input type="text" id="credit-card-number" placeholder="1234 5678 9012 3456" required>
+        <label for="credit-expiry">Validade (MM/AA)</label>
+        <input type="text" id="credit-expiry" placeholder="MM/AA" required>
+        <label for="credit-cvv">CVV</label>
+        <input type="text" id="credit-cvv" placeholder="123" required>
+        <button type="button" onclick="processPayment()">Pagar Agora</button>
+    </form>
+    <form class="payment-form" id="debit-form">
+        <h2>Pagamento com Cartão de Débito</h2>
+        <label for="debit-name">Nome Completo</label>
+        <input type="text" id="debit-name" placeholder="Digite seu nome" required>
+        <label for="debit-card-number">Número do Cartão</label>
+        <input type="text" id="debit-card-number" placeholder="1234 5678 9012 3456" required>
+        <label for="debit-expiry">Validade (MM/AA)</label>
+        <input type="text" id="debit-expiry" placeholder="MM/AA" required>
+        <label for="debit-cvv">CVV</label>
+        <input type="text" id="debit-cvv" placeholder="123" required>
+        <button type="button" onclick="processPayment()">Pagar Agora</button>
+    </form>
+    <form class="payment-form" id="pix-form">
+        <h2>Pagamento com PIX</h2>
+        <p>Use o QR Code abaixo para realizar o pagamento:</p>
+        <img src="Qrcode.png" alt="QR Code PIX" style="display: block; margin: 0 auto;">
+        <button type="button" onclick="processPayment()">Confirmar Pagamento</button>
+    </form>
+</div>
+
+<script>
+function clearOrder() {
+    localStorage.removeItem('order');
+    orderSummaryDiv.innerHTML = '<p>Seu carrinho está vazio.</p>';
+    alert('O resumo do pedido foi limpo com sucesso.');
+}
+
+const order = JSON.parse(localStorage.getItem('order')) || [];
+    const orderSummaryDiv = document.getElementById('order-summary');
+
+    if (order.length === 0) {
+        orderSummaryDiv.innerHTML = '<p>Seu carrinho está vazio.</p>';
+    } else {
+        let total = 0;
+        orderSummaryDiv.innerHTML = order.map(({ item, price }) => {
+            total += parseFloat(price);
+            return `<p>${item} - R$ ${price.toFixed(2)}</p>`;
+        }).join('');
+        orderSummaryDiv.innerHTML += `<p class="total">Total: R$ ${total.toFixed(2)}</p>`;
+    }
+
+
+    function selectPaymentMethod(method) {
+        document.querySelectorAll('.payment-form').forEach(form => form.classList.remove('active'));
+        document.getElementById(`${method}-form`).classList.add('active');
+    }
+
+
+    function processPayment() {
+        alert("Pagamento processado com sucesso! Obrigado por comprar conosco.");
+        localStorage.clear(); 
+        window.location.href = "index.html";
+    }
+</script>
+</body>
+</html>
